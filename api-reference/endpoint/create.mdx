@@ -2,3 +2,408 @@
 title: 'Create Plant'
 openapi: 'POST /plants'
 ---
+# 4.1. Booking form example
+
+---
+
+## 4.1.1. Example UI
+
+The front end UI and example of the user flow for the this booking type can be found using the link below ⬇️
+
+[universal booking form](https://centurion-v3-1.webflow.io/booking-engine-to-airport)
+
+## 4.1.2. UX flow
+
+Below are the different stages of the booking form for the “Airport transfer (To airport)” booking type ⬇️
+
+<aside>
+⚠️ This is the latest version, the example UI mentioned in section 4.1.1. above is currently outdated, but will be updated by the EOD on 25 June, so please work from the UX flow mentioned below
+
+</aside>
+
+https://whimsical.com/booking-form-ux-flow-apt-to-F2CsR11cNqRWsRXT8eASoV
+
+# 4.2. Home screen
+
+---
+
+This is the initiation screen for all of the booking types, here the user will select the “Transport to airport” option to book a “Airport Transfer (To Airport) booking.
+
+This is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/edaa7ba6-6806-4566-b690-92063f3883db/Untitled.png)
+
+# 4.3. Pickup details screen
+
+---
+
+## 4.3.1. Overview
+
+<aside>
+⚠️ This is a new change from the previous designs, and is in response to the question that you have asked in Linear, which is below ⬇️
+
+</aside>
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/475e5052-91dd-416b-b1f7-3cffa7f71b62/Untitled.png)
+
+As you have rightly mentioned, there is no city selector on the booking form so we need to manage a different method for selecting the correct city to fetch the rates from.
+
+So now we have made a change to the booking form (especially for the “Airport Transfer” booking type) where the customer will need to define the pickup/drop off address before defining the airport 
+
+This process for the “Airport Transfer (To Airport)” booking type is explained below, but the “Airport Transfer (From Airport)” booking type works using the same logic, however the pickup address and the drop off address are switched.
+
+## 4.3.2. Defining pickup address
+
+After the user has selected the booking type “Airport Transfer (To Airport)” we will direct them to the “Pickup details screen” which is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/0bd6477d-e34f-49a8-8e58-4e5991e12cb1/Untitled.png)
+
+### 4.3.2.1. Pickup address
+
+Here on this screen the user will define the pickup address by searching for the address and selecting an address from the suggestions
+
+When the user selects an address from the suggestions, please display that selected address on the map at the top of the page, this is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/3347d3c8-7f36-4ada-885e-4eefe7c60e5e/Untitled.png)
+
+<aside>
+⚠️ The user will be required to select the pickup address before defining any additional stop addresses, you can manage this in the easiest way possible, either using an error message or disabling the additional stop field before the pickup address has been defined and selected from the suggestions
+
+</aside>
+
+### 4.3.2.2. Auto-select city based on pickup address
+
+When the pickup address has been selected by the user we need to run **2 validation checks:**
+
+1. The first validation check we need runs is that the pickup address selected by the user falls within any of the defined zone within the city zone map that have been defined in the global settings
+2. If the pickup address selected does fall within any zone defined in the city zone map, then we need to check if the booking type selected has been enabled for the booking form for that zone that the pickup address falls within.
+
+### 4.3.2.3. **Pickup address not in any zone**
+
+In the case that the pickup address does not fall within any zone defined in the city zone map then we need to display an error message explaining that the address selected is not serviced, in this case you can use the error message text below ⬇️
+
+> *“Our services are not available for the address you have selected”*
+> 
+
+### 4.3.2.4. **Booking type not available for selected city**
+
+In the case that booking type selected is not available for the city that the pickup address falls within we need to display another error message explaining that the booking type is not available for this city,  in this case you can use the error message text below ⬇️
+
+> *“The service you have selected is not available for the city associated with this address”*
+> 
+
+### 4.3.2.5. **Both validation checks are passed**
+
+Finally, in the case that the booking type is enabled for the city that the pickup address falls within then we will allow the user to proceed to the next stage of the booking process and we will know which city rates to use when calculating the booking price.
+
+This whole process is explained in the video below ⬇️
+
+https://www.loom.com/share/5121fefde3c74836a6ecb1539bb1efbd?sid=3a9eea3d-80a1-4c5f-b7b7-e50d9486e8bc
+
+## 4.3.3. Additional stop addresses
+
+<aside>
+⚠️ Additional stops are NOT a required field, the user can proceed without adding any additional stops
+
+</aside>
+
+Here after defining the pickup address the user can add up to **3 additional stop addresses**
+
+When the user defines an additional stop, please display the address of that additional stop on the map at the top of the page, this is shown below (in the same way that you are displaying the pickup address selected on the map) ⬇️
+
+<aside>
+⚠️ We need to allow for up to 3 additional stops to be added to the route, the user cannot add more than 3 additional stops to the route
+
+</aside>
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/685e6724-64b6-43ee-beeb-bd137e0d2631/Untitled.png)
+
+# 4.4. Drop-off details screen
+
+---
+
+After the user has defined the pickup details (and any additional stops), and all of the validation checks have been passed, we will direct the user to the drop-off details screen
+
+This drop off details screen is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/3bf7808a-764e-4d7a-a8bf-0520c325a004/Untitled.png)
+
+## 4.4.1. Select airport
+
+This is a drop down selector that will display the airports that have been configured for the city linked to the zone that the pickup address selected falls within.
+
+In the case that there is only a single airport defined for the city, then please auto-select that airport and disable the drop down selector.
+
+It is important that we only display the airports for the city that the pickup address falls within and not the airports from other cities in the drop down selector
+
+## 4.4.2. Display route on map
+
+After the user has selected the airport from the drop down selector (or the airport has been auto-selected in the case that it is the only airport configured for the city) then please render the pins and route for the transfer in the map at the top of the screen.
+
+**The map should include:**
+
+- Route line between all points
+- Pickup address (defined in previous screen)
+- All additional stop address (if defined on previous screen)
+- Drop off address (airport address defined in settings) which is shown below ⬇️
+
+![Address defined in the settings for the airport](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/0dfd8318-672b-46c8-819a-b6bf3df17936/Untitled.png)
+
+Address defined in the settings for the airport
+
+## 4.4.3. Booking date and time
+
+- **Booking date**
+    - Calendar selector (like booking system)
+- **Booking time**
+    - Time selector (like booking system)
+    - Time displayed in increments of 5 minutes (like booking system)
+
+## 4.4.4. Passengers & bags
+
+- **Number of passengers**
+    - Number field
+    - Restrict letters and special characters
+- **Number of bags**
+    - Number field
+    - Restrict letters and special characters
+
+## 4.4.5. Flight number
+
+### 4.4.5.1. Plain text entry
+
+In the flight number text field the user will enter their flight number in plain text, we will not require the user to select a flight number from a drop down selector.
+
+### 4.4.5.2. Validation
+
+When the user clicks on the “Continue” button at the bottom of the screen we need to run a validation check on the flight number entered to see if it matches any of the flight numbers that have been defined in the flight number database for the selected airport.
+
+In order to do this effectively we need to remove the formatting of the flight number text entered by the user, so that we can compare it to the flight numbers text in our own database.
+
+For example, if the user has entered the flight number “F N-1234” the we need to remove the “space” and “dash” characters before running the validation check so that these formatted characters will not cause the validation to fail
+
+So in this case, the flight number entered as “F N-1234” will be changed to “FN1234” so that it can be checked against the flight number from Centurion database (which should also have the formatting removed, so that similar flight numbers will be matched)
+
+In the case that the flight number is not able to be matched then we need to display a modal to the user where they can search for the flight number from the Centurion flight number database and then select a pre-defined flight number before proceeding to the next stage of the booking process
+
+<aside>
+⚠️ This modal is displayed below, it will be designed properly by Siraj and the front end code for it will be provided.
+
+</aside>
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/3992e791-1385-4b71-918b-e0c954adf003/Untitled.png)
+
+<aside>
+⚠️ It is important to note that only “Departure” flight numbers will be displayed and selected for the “To Airport” booking type. The user cannot enter or select flight numbers that are “Arrival” flight numbers for the “To Airport” booking type in the booking form or search flight numbers modal.
+
+</aside>
+
+https://www.loom.com/share/deab6b865634481bb45aa38dd2502b24?sid=75667244-f6b7-4dc6-894c-a6f45a55bf68
+
+# 4.5. Travel method screen `NEW`
+
+---
+
+<aside>
+🚨 This "Travel method screen” is only for the “Airport transfer” booking type, so these changes do not apply for the P2P and D4H booking types in the booking form
+
+</aside>
+
+## 4.5.1. Overview
+
+<aside>
+⚠️ This is a new screen that we have added in the UX flow, along with some changes in the vehicle settings that will allow the user to select how they want to travel and for Centurion to only display the correct vehicles to the user based on their selection
+
+</aside>
+
+After the user has defined their pickup and drop off details they will be directed to a new screen called the “Travel method screen” which is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/e2e3c506-fa33-452d-8a7a-bb8a30aa2722/Untitled.png)
+
+The function of this screen is to help us to know which vehicles we need to display in the next screen where the user can select a vehicle.
+
+## 4.5.2. Backend vehicle settings
+
+In the backend vehicle settings for “Airport transfer” we have added the following parameters:
+
+1. **Display vehicle in booking form (boolean)**
+    - Yes
+        - If selected display “Booking form travel method” drop down selector below in vehicle configuration modal
+    - No (default selection)
+        - If selected hide “Booking form travel method” drop down selector below in vehicle configuration modal
+2. **Booking form travel method**
+    
+    Please display the following options in the drop down listing in the vehicle settings:
+    
+    - Scheduled shuttle service
+    - Shared transfer
+    - Private transfer
+    - Choose your vehicle
+
+These are shown below and are explained in the video below ⬇️
+
+![Vehicle is configured to be displayed in the booking form “Private transfer” travel method type](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/adad9de4-d3de-4925-9b94-e89066c99543/Untitled.png)
+
+Vehicle is configured to be displayed in the booking form “Private transfer” travel method type
+
+![So when the user selects the “Private transfer” travel method type we will display this vehicle](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/e0728a55-7396-4702-96e3-9561086a9ca2/Untitled.png)
+
+So when the user selects the “Private transfer” travel method type we will display this vehicle
+
+https://www.loom.com/share/9b359ad747be42bda7f00e5467bf6aa8?sid=4d55229e-f9b6-4739-80a7-18b071482d42
+
+# 4.6. Vehicle selection screen
+
+---
+
+Here the user will be presented with the available vehicles (for the travel method selected on the previous screen) to select for their booking and see the prices for each vehicle.
+
+This vehicle selection screen is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/6b93b83b-d5af-4528-a63a-8aab22e1cbf6/Untitled.png)
+
+## 4.6.1. Display parameters
+
+<aside>
+🚨 **Previously I had mentioned the following:**
+*You should also only display the vehicles that have been configured for the city in the “Customer” booking class, the vehicles that are configured in the “Corporate” booking class should not be displayed.*
+
+However, now please display all vehicles that have “Display in booking form” = “YES” regardless of their booking class as either “Customer” or “Corporate”
+
+</aside>
+
+It is important that the vehicles displayed in this list are filtered based on the following selections made by the user in the pickup details screen:
+
+1. **Number of passengers**
+    - Only display the vehicles that have a max number of passengers that are greater than the number of passengers defined by the user in the pickup details screen
+2. **Number of bags**
+    - Only display the vehicles that have a max number of bags that are greater than the number of bags defined by the user in the pickup details screen
+3. **Travel method**
+    - The vehicles displayed in the listing should only be the vehicles that have been configured for the travel method that has been selected in the previous screen
+    - For example, if “Shared transfer” has been selected then only the vehicles that have “Display in booking form” = “YES” and “Booking form travel method” = “Shared transfer” should be displayed.
+
+## 4.6.2. Vehicle list order
+
+The order of the vehicles displayed should be based on the list order defined for the vehicles in the settings.
+
+## 4.6.3. Vehicle picture asset
+
+Please display the picture defined for the vehicle in the settings in this listing.
+
+You will need to manage that for a “Citihopper” booking form you display the “Citihopper” image defined for the vehicle and for a for a “Centurion Tours” booking form you display the “Centurion Tours” image defined for the vehicle
+
+This is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/3c152a56-edcb-4bc6-973d-20beb2c0e549/Untitled.png)
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/8ab34904-a631-428d-9acb-b996205cec6a/Untitled.png)
+
+## 4.6.4. Displayed vehicle price
+
+For the “APT (To Airport)” booking type when the user is directed to the vehicle listing screen, we are displaying the rate for the booking, this rate is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/489fd4e1-92f6-41f9-9f54-049dbb7e5dbf/Untitled.png)
+
+### 4.6.4.1. Not included in rate
+
+It is important to note that the rate displayed here does **not** include any of the following fees:
+
+- Additional expenses
+- Early morning surcharge fees
+- International surcharge fees
+
+These additional type of fees will be included in the confirmation page as a separate line item, which is displayed below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/d87dd82c-454f-46b5-b0a1-53e8ecb0c2f8/Untitled.png)
+
+### 4.6.4.2. Included in rate
+
+However, the fee displayed on the vehicle listing screen will include the rate for the vehicle and any discounts/surcharge percentages or tiers that has been applied to the booking type at the following levels:
+
+- Booking form rates level
+- Account level
+    - If payment type for booking form = “Account”
+    - And “Use account rates” = “True”
+
+This is explained in the video below ⬇️
+
+https://www.loom.com/share/3fc9428b204b40ff856edb7867f0aa0a?sid=9782a02a-a131-409a-95c0-d50802a6acf0
+
+# 4.7. Additional extra’s & requests
+
+---
+
+Here the user will be able to define the additional extra’s and special requests for their booking.
+
+Please display all of the additional extra’s defined for the city that the pickup address defined falls within.
+
+If the additional extra price = R0.00 then display that price as “Free” in the booking form, this is shown below ⬇️
+
+![Additional extras that cost R0.00](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/1065faed-9435-48db-aba6-652096efb105/Untitled.png)
+
+Additional extras that cost R0.00
+
+In the example there are custom icons for the additional extras, we will not implement this for now, there will be a generic icon in this place, which will be the same for all additional extras.
+
+The user should be able to select multiple additional extra’s at the same time.
+
+# 4.8. Customer details
+
+---
+
+Here the user will add the following details:
+
+1. **Full name**
+    - Required field
+    - No validation required, they can add first and last name, or just first name
+2. **Mobile number**
+    - This mobile number is required, the user cannot proceed to the confirmation screen if they have not entered at least one mobile number
+    - Validation required
+    
+    <aside>
+    ⚠️ **@Saniya**
+    Can you please check to see if there is any open source code that can manage the required number format and minimum characters for the mobile number of the selected country?
+    
+    </aside>
+    
+3. **Alternative mobile number**
+    - Optional field
+    - No validation required on this contact number, like there is for the mobile number
+4. **Email address**
+    - Required field
+    - Standard email validation required
+        - Must contain @ sign and acceptable top level domain etc
+        - Implement validation as you have done before
+
+This screen is shown below ⬇️
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/bd8fc313-1f98-48c1-8800-6657657db7f3/e3dc797a-3d4d-4de2-b43f-6f6fc410a6ef/Untitled.png)
+
+# 4.9. Confirm booking and pay
+
+---
+
+Here the user will review the information they have entered throughout the booking flow, and then proceed to pay & create the booking
+
+On this screen for the booking type “Airport Transfer (To Airport)” please display the following data:
+
+1. Booking date and time
+2. Pickup address
+    - This is a shortened address from the full address string
+3. Destination address
+    - This is the name for the airport selected
+4. Number of passengers and bags
+5. Flight number
+6. Full name
+7. Mobile number and alternative contact number 
+8. Email address
+9. Vehicle selected and price
+10. All additional extras selected 
+    - Please display each additional extra on another line
+11. All additional costs
+    - Early morning surcharge
+12. Payment information
+    - Subtotal = Vehicle price + All additional extras
+    - VAT (15%) = R 0.00 in all cases as VAT does not get charged on transport
+
+This screen is shown below ⬇️
